@@ -4,6 +4,8 @@ import { Observable } from "rxjs";
 import { CityService } from '../../Services/city.service';
 import { City } from 'src/app/Models/city';
 import { map } from 'rxjs';
+import { Location } from 'src/app/Models/location';
+/// <reference types="@types/googlemaps" />
 
 @Component({
   selector: 'app-city',
@@ -12,10 +14,10 @@ import { map } from 'rxjs';
 })
 export class CityComponent {
   public cities:Array<City> = [];
-  public citiesName:Array<String> = [];
-  constructor(private http: HttpClient, private httpCityService: CityService) {
-  }
+  public citiesLocation:Array<Location> = [];
 
+  constructor(private http: HttpClient, private httpCityService: CityService) {}
+  
   ngOnInit(): void {
     this.getCities();
   }
@@ -24,7 +26,10 @@ export class CityComponent {
     this.httpCityService.getCities().subscribe(
       (data) => {
         this.cities = data.cities;
-        this.citiesName = this.cities.map(city => city.place.city);;
+        this.cities.forEach(city => this.citiesLocation.push({
+          latitude: city.bounds.northeast.lat,
+          longitude: city.bounds.northeast.lng,
+        })); 
       },
       (error) => {
         alert(error.message);

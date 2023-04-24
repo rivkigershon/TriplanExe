@@ -1,8 +1,5 @@
-<table>
-    <tr>
-      <th>name</th>
-    </tr>
-    <tr *ngFor="let cityName of citiesName">
-      <td>{{ cityName }}</td>
-    </tr>
-  </table>
+<div class="map">
+<agm-map [fitBounds]="true" [zoom]="10">
+  <agm-marker *ngFor="let city of citiesLocation" [agmFitBounds]="true" [latitude]="city.latitude" [longitude]="city.longitude"></agm-marker>
+</agm-map>
+</div>
